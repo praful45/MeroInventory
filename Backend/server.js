@@ -1,29 +1,20 @@
-const dotenv = require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const connectToMongo = require('./config/db');
+const express = require('express')
+// const cors = require('cors')
+
+connectToMongo();
+
 
 const app = express()
+const port = 5000
 
-// Middlewares
+// app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({extended: false}))
-app.use(bodyParser.json())
 
-//Routes
-app.get("/",(req,res)=>{
-    res.send("Home Page");
-});
+//Available Routes
+const productRoutes = require('./routes/productsRoute');
+app.use('/api',productRoutes)
 
-
-//Connect to DB and start server
-const PORT = process.env.PORT || 5000;
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(()=>{
-        app.listen(PORT, ()=>{
-            console.log(`Server Running on port ${PORT}`)
-        })
-    })
-    .catch((err)=>console.log())
+app.listen(port, () => {
+  console.log(`Backend at http://localhost:${port}`)
+})
