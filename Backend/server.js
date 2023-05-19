@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const categoryRoute = require('./routes/categoryRoute')
 
 const app = express()
 
@@ -15,6 +16,8 @@ app.use(bodyParser.json())
 app.get("/",(req,res)=>{
     res.send("Home Page");
 });
+
+app.use('/categories', categoryRoute)
 
 
 //Connect to DB and start server
