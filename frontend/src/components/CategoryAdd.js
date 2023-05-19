@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Axios from "axios";
 //import { Form, Button } from "react-bootstrap";
 
 const CategoryAdd = () => {
@@ -20,13 +21,26 @@ const CategoryAdd = () => {
       return;
     }
 
-    // Add the product category to the database
-    // ...
-
     // Redirect to the product category list page
-    window.location.href = "/product-categories";
-    //// const newCategory = { name, description };
+    ///window.location.href = "/product-categories";
     // Send a POST request to your backend API to create a new product category
+    const data = {
+      name,
+      description,
+    };
+
+    Axios.post("/api/product-categories", data)
+      .then((response) => {
+        if (response.status === 200) {
+          setName("");
+          setDescription("");
+        } else {
+          alert("Error adding product category");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
