@@ -1,10 +1,15 @@
-import './App.css';
+import { BrowserRouter } from "react-router-dom";
+import TopNavbar from "./components/TopNavbar";
+import InvRoutes from './pages/routes/InvRoutes';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Mero Inventory</h1>
-    </div>
+    <>
+      <BrowserRouter>
+        <TopNavbar />
+        <InvRoutes />
+      </BrowserRouter>
+    </>
   );
 }
 

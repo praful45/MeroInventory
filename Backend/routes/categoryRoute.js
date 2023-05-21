@@ -4,10 +4,10 @@ const router = express.Router();
 const categoryController = require('../controllers/categoryController');
 
 // Get all products
-router.get('/', categoryController.getAllCategory);
+router.get('/getallcategories', categoryController.getAllCategory);
 
 
 // Create a new product
-router.post('/', categoryController.createCategory);
+router.post('/create-category', categoryController.createCategory);
 
 module.exports = router;
