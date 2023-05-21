@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 //import { Form, Button } from "react-bootstrap";
+import { Link } from 'react-router-dom'
 
 const CategoryAdd = () => {
   const [name, setName] = useState("");
@@ -44,17 +45,17 @@ const CategoryAdd = () => {
   };
 
   return (
-    <div class="mx-5">
-      <form onSubmit={handleSubmit} class="w-75">
+    <div className="mx-5">
+      <form onSubmit={handleSubmit} className="w-75">
         <h2>Categories</h2>
-        <div class="w-90 p-3 mb-2 bg-info text-dark">Add New Category</div>
-        <div class="w-90 p-3">
-          <label for="categoryname" class="form-label">
+        <div className="w-90 p-3 mb-2 bg-info text-dark">Add New Category</div>
+        <div className="w-90 p-3">
+          <label for="categoryname" className="form-label">
             <b>Category Name</b>
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="categoryname"
             placeholder="Enter Category Name"
             value={name}
@@ -62,12 +63,12 @@ const CategoryAdd = () => {
           />
         </div>
 
-        <div class="w-90 p-3">
-          <label for="description" class="form-label">
+        <div className="w-90 p-3">
+          <label for="description" className="form-label">
             <b>Category Description</b>
           </label>
           <textarea
-            class="form-control"
+            className="form-control"
             id="categoryDescription"
             placeholder="Enter description of category"
             value={description}
@@ -75,20 +76,20 @@ const CategoryAdd = () => {
             rows="3"
           ></textarea>
         </div>
-        <div class="form-group">
-          <label class="col-md-4 control-label" for="submit"></label>
-          <div class=" gap-2 d-flex justify-content-md-end">
-            <button id="submit" name="submit" class="btn btn-primary" value="1">
+        <div className="form-group">
+          <label className="col-md-4 control-label" for="submit"></label>
+          <div className=" gap-2 d-flex justify-content-md-end">
+            <button id="submit" name="submit" className="btn btn-primary" value="1">
               Add Category
             </button>
-            <a
-              href="/link-to/whatever-address/"
+            <Link
+              to="/category"
               id="cancel"
               name="cancel"
-              class="btn btn-default"
+              className="btn btn-default"
             >
               Cancel
-            </a>
+            </Link>
           </div>
         </div>
       </form>
