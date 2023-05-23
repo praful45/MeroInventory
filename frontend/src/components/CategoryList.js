@@ -5,20 +5,12 @@ import axios from 'axios';
 import CategoryView from "./CategoryView";
 import '../App.css'
 
-//remove this const Data and its usesate after applying axios get properly
-const Data = [
-  { name: "hello" },
-  { name: "hello" },
-  { name: "hello" },
-  { name: "hello" },
-  { name: "hello" },
-  { name: "hello" },
-]
 
 export default function CategoryList() {
-  const [data, setData] = useState(Data)
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState(null);
 
   useEffect(() => {
     fetchCategories();
@@ -40,6 +32,21 @@ export default function CategoryList() {
   const closeDetails = () => {
     setSelectedCategory(null);
   };
+  const deleteRow = (id) => {
+    setDeletingItemId(id);
+    setShowPopup(true);
+  };
+
+    const confirmDelete = () => {
+    // const updatedData = categories.filter((item) => item.id !== deletingItemId);
+    // setCategories(updatedData);
+    // setShowPopup(false);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
 
   return (
     <div
@@ -66,15 +73,12 @@ export default function CategoryList() {
         </thead>
 
         <tbody>
-          {data.map((row, index) => (
+          {categories.map((row, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{row.name}</td>
               <td>
                 <span>
-                  {/* <Link to="/category-view">
-                    <BsEye size={18} color="blue" />{" "}
-                  </Link> */}
                   <button className="icon-btn" onClick={() => viewCategory(row)}>
                     <BsEye size={18} color="blue" />{" "}
                   </button>
@@ -82,10 +86,9 @@ export default function CategoryList() {
                     {" "}
                     <BsPencilSquare size={18} color="black" />{" "}
                   </Link>
-                  <Link to="/category-delete">
-                    {" "}
-                    <BsFillTrashFill size={18} color="red" />{" "}
-                  </Link>
+                  <button className="icon-btn" onClick={() => deleteRow(row.id)}>
+                    <BsFillTrashFill size={18} color="red" />
+                  </button>
                 </span>
               </td>
             </tr>
@@ -99,6 +102,35 @@ export default function CategoryList() {
           onClose={closeDetails}
         />
       )}
+      {showPopup && (
+        <div className="modal" style={{ display: 'block' }}>
+          <div
+            className="modal-dialog"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">
+                  Are you sure you want to delete this category?
+                </h5>
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-danger" onClick={confirmDelete}>
+                  OK
+                </button>
+                <button className="btn btn-primary" onClick={closePopup}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
+  
 }
