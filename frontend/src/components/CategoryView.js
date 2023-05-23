@@ -10,12 +10,12 @@ const CategoryView = (props) => {
             <b>View</b>
           </div>
           <div className="card-body">
-            <h6 className="card-title">Name: </h6>
+            <h6 className="card-title">Name: </h6><p>{props.name}</p>
             <h6 className="card-text">Description: </h6>
             <p>
-              Nepal is a landlocked Asian country bordered by the People's Republic of China to the north and India to the south, east, and west. The Himalayan mountain range stretches through Nepal, and the country is home to eight of the world's ten highest peaks, including Mount Everest (8,848m).
+              {props.description}
             </p>
-            <div className="text-left">
+            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
               <button onClick={props.onClose} className="btn btn-primary">Cancel</button>
             </div>
           </div>
