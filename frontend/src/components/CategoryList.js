@@ -66,7 +66,7 @@ export default function CategoryList() {
         </thead>
 
         <tbody>
-          {data.map((row, index) => (
+          {categories.map((row, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{row.name}</td>
