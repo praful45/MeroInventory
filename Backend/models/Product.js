@@ -25,15 +25,9 @@ const productSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-  },
-  added_at: {
-    type: Date,
-    default: Date.now,
-  },
-  updated_at: {
-    type: Date,
-    default: Date.now,
-  },
+  }
+}, {
+  timestamps: true
 });
 
 module.exports = mongoose.model('Product', productSchema);

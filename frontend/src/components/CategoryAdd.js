@@ -30,9 +30,9 @@ const CategoryAdd = () => {
       description,
     };
 
-    Axios.post("/api/product-categories", data)
+    Axios.post("http://localhost:5000/api/create-category", data)
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           setName("");
           setDescription("");
         } else {
@@ -77,7 +77,7 @@ const CategoryAdd = () => {
           ></textarea>
         </div>
         <div className="form-group">
-          <label className="col-md-4 control-label" for="submit"></label>
+          <label className="col-md-4 control-label" htmlFor="submit"></label>
           <div className=" gap-2 d-flex justify-content-md-end">
             <button id="submit" name="submit" className="btn btn-primary" value="1">
               Add Category
