@@ -12,19 +12,20 @@ exports.getAllCategory = async (req, res) => {
 
 // create category
 exports.createCategory = async (req, res) => {
-  try {
-    const {name, description } = req.body;
-    const newCategory = new Category({
-      name,
-      description,
-    });
+  const { name, description } = req.body;
 
-    const savedCategory = await newCategory.save();
-    res.status(201).json(savedCategory);
-  }
-  catch (error) {
-    console.error(error)
-    res.status(500).json({ message: 'Server Error'});
+  try {
+    // Check if the category already exists
+    const existingCategory = await Category.findOne({ name: { $regex: new RegExp(`^${name}$`,'i')} });
+
+    if (existingCategory) {
+      return res.status(400).json({ error: 'Category already exists' });
+    }
+
+    const newCategory = await Category.create({ name, description });
+    res.status(201).json(newCategory);
+  } catch (err) {
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
