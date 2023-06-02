@@ -27,7 +27,7 @@ const AddProduct = () => {
     formData.append("quantity", productQuantity);
 
     axios
-      .post("http://localhost:5000/api/createProduct", formData)
+      .post("http://localhost:5000/api/create-product", formData)
       .then((response) => response.json())
       .then((product) => {
         // Redirect the user back to the inventory page.
@@ -38,7 +38,7 @@ const AddProduct = () => {
   useEffect(() => {
     // Get the list of categories from the backend API.
     axios
-      .get("http://localhost:5000/api/getAllCategory")
+      .get("http://localhost:5000/api/getallcategories")
       .then((response) => response.json())
       .then((categories) => {
         setProductCategories(categories);
@@ -91,7 +91,7 @@ const AddProduct = () => {
           <label for="categoryname" className="form-label">
             <b>Categories</b>
           </label>
-          <select multiple name="categories">
+          <select name="categories">
             {productCategories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
