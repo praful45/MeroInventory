@@ -7,15 +7,59 @@ const AddProduct = () => {
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productCategories, setProductCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
 
   const handleImageChange = (e) => {
     setProductImage(e.target.files[0]);
   };
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  function handleChange(event) {
+    const value = event.target.value;
+
+    // Update the state of the `categories` variable.
+    this.setState({
+      categories: value,
+    });
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    //Vallidate the input fields
+    if (productImage === "") {
+      alert("Please insert an image.");
+      return;
+    }
+
+    if (productName === "") {
+      alert("Please enter a product name.");
+      return;
+    }
+
+    if (productDescription === "") {
+      alert("Please enter a product description.");
+      return;
+    }
+
+    if (selectedCategory === "") {
+      alert("Please select a category.");
+      return;
+    }
+
+    if (productPrice === "") {
+      alert("Please enter a product price.");
+      return;
+    }
+
+    if (productQuantity === "") {
+      alert("Please enter a product quantity.");
+      return;
+    }
 
     // Make a request to the backend API to create the new product.
     const formData = new FormData();
@@ -27,7 +71,7 @@ const AddProduct = () => {
     formData.append("quantity", productQuantity);
 
     axios
-      .post("http://localhost:5000/api/createProduct", formData)
+      .post("http://localhost:5000/api/create-product", formData)
       .then((response) => response.json())
       .then((product) => {
         // Redirect the user back to the inventory page.
@@ -38,7 +82,7 @@ const AddProduct = () => {
   useEffect(() => {
     // Get the list of categories from the backend API.
     axios
-      .get("http://localhost:5000/api/getAllCategory")
+      .get("http://localhost:5000/api/getallcategories")
       .then((response) => response.json())
       .then((categories) => {
         setProductCategories(categories);
@@ -53,7 +97,7 @@ const AddProduct = () => {
           Add New Products
         </div>
         <div className="w-90 p-3">
-          <label for="img" className="form-label">
+          <label htmlFor="img" className="form-label">
             <b>Image</b>
           </label>
           <input
@@ -65,7 +109,7 @@ const AddProduct = () => {
           />
         </div>
         <div className="w-90 p-3">
-          <label for="productname" className="form-label">
+          <label htmlFor="productname" className="form-label">
             <b>Product Name</b>
           </label>
           <input
@@ -77,7 +121,7 @@ const AddProduct = () => {
           />
         </div>
         <div className="w-90 p-3">
-          <label for="description" className="form-label">
+          <label htmlFor="description" className="form-label">
             <b>Description</b>
           </label>
           <textarea
@@ -88,19 +132,20 @@ const AddProduct = () => {
           />
         </div>
         <div className="w-90 p-3">
-          <label for="categoryname" className="form-label">
+          <label htmlFor="categoryname" className="form-label">
             <b>Categories</b>
           </label>
-          <select multiple name="categories">
+          <select value={selectedCategory} onChange={handleCategoryChange}>
+            <option value="">Select a category</option>
             {productCategories.map((category) => (
-              <option key={category.id} value={category.id}>
+              <option key={category._id} value={category._id}>
                 {category.name}
               </option>
             ))}
           </select>
         </div>
         <div className="w-90 p-3">
-          <label for="price" className="form-label">
+          <label htmlFor="price" className="form-label">
             <b>Price</b>
           </label>
           <input
@@ -112,7 +157,7 @@ const AddProduct = () => {
           />
         </div>
         <div className="w-90 p-3">
-          <label for="quantity" className="form-label">
+          <label htmlFor="quantity" className="form-label">
             <b>Quantity</b>
           </label>
           <input
@@ -124,7 +169,7 @@ const AddProduct = () => {
           />
         </div>
         <div className="form-group">
-          <label className="col-md-4 control-label" for="submit"></label>
+          <label className="col-md-4 control-label" htmlFor="submit"></label>
           <div className=" gap-2 d-flex justify-content-md-end text-dark">
             <button
               id="submit"
