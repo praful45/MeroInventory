@@ -66,7 +66,7 @@ const AddProduct = () => {
     formData.append("image", productImage);
     formData.append("name", productName);
     formData.append("description", productDescription);
-    formData.append("categories", productCategories);
+    formData.append("categoryName", selectedCategory);
     formData.append("price", productPrice);
     formData.append("quantity", productQuantity);
 
@@ -138,7 +138,7 @@ const AddProduct = () => {
           <select value={selectedCategory} onChange={handleCategoryChange}>
             <option value="">Select a category</option>
             {productCategories.map((category) => (
-              <option key={category._id} value={category._id}>
+              <option key={category._id} value={category.name}>
                 {category.name}
               </option>
             ))}
