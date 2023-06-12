@@ -49,6 +49,8 @@ const TopNavbar = () => {
 
                 <NavDropdown title='Warehouse' id='top-nav'>
                   <NavDropdown.Item href='#'>Manage Warehouse</NavDropdown.Item>
+                  <NavDropdown.Divider/>
+                  <NavDropdown.Item href='#'>Add Warehouse</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
 
