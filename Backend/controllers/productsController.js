@@ -59,3 +59,77 @@ exports.getProductById = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
+//update product by id
+exports.updateProductById = async (req, res) => {
+  const productId = req.params.id;
+  try {
+    const { name, description, categoryName, price, quantity } = req.body;
+
+    const updatedFields = {
+      name: name || undefined,
+      description: description || undefined,
+      price: price || undefined,
+      quantity: quantity || undefined,
+    };
+
+    if (categoryName) {
+      const existingCategory = await Category.findOne({ name: categoryName });
+      if (!existingCategory) {
+        return res.status(400).json({ message: 'Invalid category' });
+      }
+      updatedFields.category = existingCategory._id;
+    }
+
+    if (req.file && req.file.filename) {
+      updatedFields.image = req.file.filename;
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { $set: updatedFields },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    
+    res.status(200).json({
+      success: true,
+      product: updatedProduct,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+
+//delete product by id
+exports.deleteProductById = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const deletedProduct = await Product.findByIdAndRemove(productId);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json({
+      success: true,
+      product: deletedProduct,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+
+
+
+
+

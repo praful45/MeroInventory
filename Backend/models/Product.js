@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   category: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: 'Category',
     required: true,
   },
@@ -31,3 +31,4 @@ const productSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Product', productSchema);
+

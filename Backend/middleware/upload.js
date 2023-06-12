@@ -1,17 +1,26 @@
 const multer = require('multer');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
-// Configure multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + '-' + uniqueSuffix);
+    const uniqueName = `${uuidv4()}-${file.originalname}`;
+    cb(null, uniqueName);
   },
 });
 
-// Create multer instance
-const upload = multer({ storage });
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'));
+    }
+  },
+});
 
 module.exports = upload;
