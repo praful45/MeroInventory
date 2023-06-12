@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
   const [productImage, setProductImage] = useState("");
@@ -10,6 +11,7 @@ const AddProduct = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     setProductImage(e.target.files[0]);
@@ -72,10 +74,9 @@ const AddProduct = () => {
 
     axios
       .post("http://localhost:5000/api/create-product", formData)
-      .then((response) => response.json())
       .then((product) => {
         // Redirect the user back to the inventory page.
-        //window.location.href = "/inventory";
+        navigate("/product");
       });
   };
 
@@ -83,9 +84,8 @@ const AddProduct = () => {
     // Get the list of categories from the backend API.
     axios
       .get("http://localhost:5000/api/getallcategories")
-      .then((response) => response.json())
       .then((categories) => {
-        setProductCategories(categories);
+        setProductCategories(categories.data);
       });
   }, []);
 

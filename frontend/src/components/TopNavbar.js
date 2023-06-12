@@ -49,21 +49,29 @@ const TopNavbar = () => {
                 <NavDropdown title='Products' id='top-nav'>
                   <NavDropdown.Item as={Link} to="/product">Manage products</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href='#'>Add New product</NavDropdown.Item>
-                </NavDropdown>
-
-                  <NavDropdown.Divider />
                   <NavDropdown.Item as={Link} to="/product-add">
                     Add New product
                   </NavDropdown.Item>
                 </NavDropdown>
 
                 <NavDropdown title="Sales" id="top-nav">
-                  <NavDropdown.Item href="#">Sales Report</NavDropdown.Item>
+                  <NavDropdown.Item href="#">Manage SalesOrder</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='#'>Add SalesOrder</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='#'>Manage Customer</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='#'>Add Customer</NavDropdown.Item>
                 </NavDropdown>
 
                 <NavDropdown title="Warehouse" id="top-nav">
                   <NavDropdown.Item href="#">Manage Warehouse</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='#'>Add Warehouse</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='#'>Manage Supplier</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='#'>Add Supplier</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
 
