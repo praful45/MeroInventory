@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BsFolderFill} from "react-icons/bs";
 import { BrowserRouter, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -10,36 +11,38 @@ export default function ProductEdit(props) {
   const [category,setCategories]=useState(props.category || '');
   const [price,setPrice]=useState(props.price || '');
   const [quantity,setQuantity]=useState(props.qty || '');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // const data = {
-    //   name,
-    //   description,
-    //   image,
-    //   category,
-    //   price,
-    //   quantity,
-    // };
-  
-    // axios.post(`/api/product-categories/${props.id}`, data) // Assuming the API endpoint for updating a category is /api/product-categories/{id}
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       setName("");
-    //       setDescription("");
-    //       setImage("");
-    //       setCategories("");
-    //       setPrice("");
-    //       setQuantity("");
+  e.preventDefault();
 
-          window.location.href = "/product-categories"; // Redirect to the product category list page
-      //   } else {
-      //     alert("Error updating product category");
-      //   }
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // });
+    const data = {
+      name,
+      description,
+      image,
+      category,
+      price,
+      quantity,
+    };
+  
+    axios.put(`http://localhost:5000/api/updateproduct/${props.id}`, data)
+      .then((response) => {
+        if (response.status === 200) {
+          setName("");
+          setDescription("");
+          setImage("");
+          setCategories("");
+          setPrice("");
+          setQuantity("");
+          props.onClose()
+
+        } else {
+          alert("Error updating product category");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleImageChange = (e) => {
@@ -73,7 +76,7 @@ export default function ProductEdit(props) {
           }}
         >
           
-          <form >
+          <form onSubmit={handleSubmit}>
             <div className="form">
               <div className="w-90 p-3 mb-2 text-dark" style={{ fontSize: '20px' }}>
                 <b>Edit Product</b>
@@ -164,7 +167,7 @@ export default function ProductEdit(props) {
                 <label className="col-md-4 control-label" htmlFor="submit"></label>
                 <div className="gap-2 d-flex justify-content-md-end">
                 <button onClick={props.onClose} className="btn btn-primary">Cancel</button>
-                  <button  onClick={handleSubmit} id="submit" name="submit" className="btn btn-primary" value="1">
+                  <button  type='submit' id="submit" name="submit" className="btn btn-primary" value="1">
                     Update
                   </button>
                 </div>
