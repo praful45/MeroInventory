@@ -6,25 +6,30 @@ import ProductView from "./ProductView";
 import ProductEdit from "./ProductEdit";
 import '../App.css';
 
-export default function ProductList() {
+export default function ProductList(props) {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [editedProduct, setEditedProduct] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [deletingItemId, setDeletingItemId] = useState(null);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/getallproducts');
+      const response = await axios.get('http://localhost:5000/api/getAllProducts');
       setProducts(response.data);
     } catch (error) {
       console.log(error);
     }
   }
+  const updateProductList = async () => {
+    await fetchProducts();
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+ 
 
   const viewProduct = (product) => {
     setSelectedProduct(product);
@@ -38,14 +43,15 @@ export default function ProductList() {
   };
 
   const deleteRow = (id) => {
+    console.log(id);
     setDeletingItemId(id);
     setShowPopup(true);
   };
 
   const confirmDelete = () => {
-    // const updatedData = products.filter((item) => item.id !== deletingItemId);
-    // setProducts(updatedData);
-    // setShowPopup(false);
+    axios.delete(`http://localhost:5000/api/deleteproduct/${deletingItemId}`)
+    setShowPopup(false);
+    updateProductList();
   };
 
   const closePopup = () => {
@@ -103,7 +109,7 @@ export default function ProductList() {
                       <button className="icon-btn" onClick={() => editProduct(row)}>
                         <BsPencilSquare size={18} color="black" />{" "}
                       </button>
-                      <button className="icon-btn" onClick={() => deleteRow(row.id)}>
+                      <button className="icon-btn" onClick={() => deleteRow(row._id)}>
                         <BsFillTrashFill size={18} color="red" />
                       </button>
                     </span>
@@ -124,12 +130,16 @@ export default function ProductList() {
       )}
       {editedProduct && (
         <ProductEdit
+          id ={editedProduct._id}
           name={editedProduct.name}
           description={editedProduct.description}
           category={editedProduct.categories}
           price={editedProduct.price}
           qty={editedProduct.quantity}
-          onClose={closeEditDetails}
+          onClose={() => {
+            closeEditDetails();
+            updateProductList();
+          }}
         />
       )}
 
