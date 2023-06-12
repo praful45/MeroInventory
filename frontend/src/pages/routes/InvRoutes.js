@@ -6,6 +6,9 @@ import CategoryAdd from "../../components/CategoryAdd";
 import CategoryListEdit from "../../components/CategoryListEdit";
 import CategoryListDelete from "../../components/CategoryListDelete";
 import ProductAdd from "../../components/ProductAdd";
+import ProductList from "../../components/ProductList";
+import ProductEdit from "../../components/ProductEdit";
+
 
 const InvRoutes = () => {
   return (
@@ -17,6 +20,8 @@ const InvRoutes = () => {
         <Route path="/category-edit" element={<CategoryListEdit />} />
         <Route path="/category-delete" element={<CategoryListDelete />} />
         <Route path="/product-add" element={<ProductAdd />} />
+        <Route path="/product" element={<ProductList/>} />
+        <Route path="/product-edit" element={<ProductEdit />} />
       </Routes>
     </>
   );

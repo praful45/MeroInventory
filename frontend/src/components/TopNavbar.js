@@ -46,8 +46,12 @@ const TopNavbar = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
 
-                <NavDropdown title="Products" id="top-nav">
-                  <NavDropdown.Item href="#">Manage products</NavDropdown.Item>
+                <NavDropdown title='Products' id='top-nav'>
+                  <NavDropdown.Item as={Link} to="/product">Manage products</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href='#'>Add New product</NavDropdown.Item>
+                </NavDropdown>
+
                   <NavDropdown.Divider />
                   <NavDropdown.Item as={Link} to="/product-add">
                     Add New product
