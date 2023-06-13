@@ -87,7 +87,7 @@ const AddProduct = () => {
       .then((categories) => {
         setProductCategories(categories.data);
       });
-  }, []);
+  }, [productCategories]);
 
   return (
     <div className="mx-5">
