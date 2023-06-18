@@ -98,7 +98,7 @@ export default function ProductList(props) {
                                     <td>{index + 1}</td>
                                     <td><img src={row.image} alt="Product Image" /></td>
                                     <td>{row.name}</td>
-                                    <td>{row.category.name}</td>
+                                    <td>{row.category?.name}</td>
                                     <td>{row.price}</td>
                                     <td>{row.quantity}</td>
                                     <td>
@@ -125,7 +125,7 @@ export default function ProductList(props) {
                 <ProductView
                     name={selectedProduct.name}
                     description={selectedProduct.description}
-                    category={selectedProduct.category.name}
+                    category={selectedProduct.category?.name}
                     price={selectedProduct.price}
                     qty={selectedProduct.quantity}
                     onClose={closeDetails}
@@ -136,7 +136,7 @@ export default function ProductList(props) {
                     id={editedProduct._id}
                     name={editedProduct.name}
                     description={editedProduct.description}
-                    category={editedProduct.category.name}
+                    category={editedProduct.category?.name}
                     price={editedProduct.price}
                     qty={editedProduct.quantity}
                     onClose={() => {

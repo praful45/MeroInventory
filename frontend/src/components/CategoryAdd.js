@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import Axios from "axios";
 //import { Form, Button } from "react-bootstrap";
 import { Link } from 'react-router-dom'
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const CategoryAdd = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const { user } = useAuthContext();
 
   // Add form submit handler here
   const handleSubmit = (e) => {
@@ -30,11 +32,16 @@ const CategoryAdd = () => {
       description,
     };
 
-    Axios.post("http://localhost:5000/api/create-category", data)
+    Axios.post("http://localhost:5000/api/create-category", data, {
+      headers: {
+        'Authorization': `Bearer ${user.accessToken}`
+      }
+    })
       .then((response) => {
         if (response.status === 201) {
           setName("");
           setDescription("");
+          alert("Added Successfully!!")
         } else {
           alert("Error adding product category");
         }

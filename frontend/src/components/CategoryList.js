@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BsEye, BsFillTrashFill, BsPencilSquare } from "react-icons/bs";
 import { Link } from 'react-router-dom'
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import axios from "axios";
 import CategoryView from "./CategoryView";
@@ -14,11 +15,16 @@ export default function CategoryList(props) {
   const [editedCategory, setEditedCategory] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [deletingItemId, setDeletingItemId] = useState(null);
+  const { user } = useAuthContext()
 
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/getallcategories');
+      const response = await axios.get('http://localhost:5000/api/getallcategories', {
+        headers: {
+          'Authorization': `Bearer ${user.accessToken}`
+        }
+      });
       setCategories(response.data);
     } catch (error) {
       console.log(error);
@@ -49,7 +55,11 @@ export default function CategoryList(props) {
   };
 
   const confirmDelete = () => {
-    axios.delete(`http://localhost:5000/api/delete-category/${deletingItemId}`)
+    axios.delete(`http://localhost:5000/api/delete-category/${deletingItemId}`, {
+      headers: {
+        'Authorization': `Bearer ${user.accessToken}`
+      }
+    })
     setShowPopup(false);
     updateCategoryList();
   };
@@ -60,7 +70,7 @@ export default function CategoryList(props) {
   const editCategory = (category) => {
     setEditedCategory(category);
   };
-  
+
 
   return (
     <>
@@ -110,16 +120,16 @@ export default function CategoryList(props) {
           />
         )}
         {editedCategory && (
-        <CategoryListEdit
-          id = {editedCategory._id}
-          name={editedCategory.name}
-          description={editedCategory.description}
-          onClose={() => {
-            closeEditDetails();
-            updateCategoryList();
-          }}
-        />
-      )}
+          <CategoryListEdit
+            id={editedCategory._id}
+            name={editedCategory.name}
+            description={editedCategory.description}
+            onClose={() => {
+              closeEditDetails();
+              updateCategoryList();
+            }}
+          />
+        )}
         {showPopup && (
           <div className="modal" style={{ display: 'block' }}>
             <div className="modal-dialog" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const AddProduct = () => {
   const [productImage, setProductImage] = useState("");
@@ -12,6 +13,7 @@ const AddProduct = () => {
   const [productPrice, setProductPrice] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
   const navigate = useNavigate();
+  const { user } = useAuthContext();
 
   const handleImageChange = (e) => {
     setProductImage(e.target.files[0]);
@@ -73,7 +75,11 @@ const AddProduct = () => {
     formData.append("quantity", productQuantity);
 
     axios
-      .post("http://localhost:5000/api/create-product", formData)
+      .post("http://localhost:5000/api/create-product", formData, {
+        headers: {
+          'Authorization': `Bearer ${user.accessToken}`
+        }
+      })
       .then((product) => {
         // Redirect the user back to the inventory page.
         navigate("/product");
@@ -83,7 +89,11 @@ const AddProduct = () => {
   useEffect(() => {
     // Get the list of categories from the backend API.
     axios
-      .get("http://localhost:5000/api/getallcategories")
+      .get("http://localhost:5000/api/getallcategories", {
+        headers: {
+          'Authorization': `Bearer ${user.accessToken}`
+        }
+      })
       .then((categories) => {
         setProductCategories(categories.data);
       });
