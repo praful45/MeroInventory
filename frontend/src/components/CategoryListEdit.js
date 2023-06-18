@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CategoryList from './CategoryList';
 import Axios from 'axios';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 // import Data from './data.json';
 
 export default function CategoryListEdit(props) {
   const [name, setName] = useState(props.name || '');
   const [description, setDescription] = useState(props.description || '');
-  const navigate = useNavigate();
-  
+  const { user } = useAuthContext()
+
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
     // Add the product category to the database
     // ...
@@ -26,7 +27,11 @@ export default function CategoryListEdit(props) {
       description,
     };
 
-    Axios.put(`http://localhost:5000/api/update-category/${props.id}`, data)
+    Axios.put(`http://localhost:5000/api/update-category/${props.id}`, data, {
+      headers: {
+        'Authorization': `Bearer ${user.accessToken}`
+      }
+    })
       .then((response) => {
         if (response.status === 200) {
           setName("");
@@ -48,7 +53,7 @@ export default function CategoryListEdit(props) {
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
         rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-        crossorigin="anonymous"
+        crossOrigin="anonymous"
       ></link>
       <div className="view-overlay">
         <div
