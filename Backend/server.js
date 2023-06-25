@@ -7,6 +7,7 @@ const createError = require('http-errors')
 const categoryRoute = require('./routes/categoryRoute')
 const productsRoute = require('./routes/productsRoute')
 const authRoute = require('./routes/authRoute');
+const suppliersRoute = require('./routes/suppliersRoute');
 const { verifyAccessToken } = require("./middleware/authHelpers/jwtHelper");
 
 const app = express()
@@ -34,6 +35,9 @@ app.use('/api', verifyAccessToken, categoryRoute)
 
 
 
+
+//suppliers
+app.use('/api', suppliersRoute)
 
 //not found
 app.use(async (req, res, next) => {
