@@ -1,127 +1,106 @@
-const customer = require('../models/customer');
+const Customer = require('../models/Customer');
 
 // Create a new customer
-exports.createcustomer = async (req, res) => {
-  try {
-    const { name, address,email, phone} = req.body;
+exports.createCustomer = async (req, res) => {
+    try {
+        const { name, email, phone, address } = req.body;
 
-    
+        const newCustomer = new Customer({
+            name,
+            email,
+            phone,
+            address,
+        });
 
-    const newcustomer = new customer({
-      name,
-      address,
-      email,
-      phone,
-    });
+        const savedCustomer = await newCustomer.save();
 
-    const savedcustomer = await newcustomer.save();
-
-    res.status(201).json({
-      success: true,
-      customer: savedcustomer,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error' });
-  }
+        res.status(201).json({
+            success: true,
+            customer: savedCustomer,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
 };
-{/*
-//get all customer
-exports.getAllcustomer = async (req, res) => {
-  try {
-    const customer = await customer.find().populate('category');
-    res.status(200).json(customer);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to fetch customer.' });
-  }
+
+//get all customers
+exports.getAllCustomers = async (req, res) => {
+    try {
+        const customers = await Customer.find();
+        res.status(200).json(customers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to fetch customers.' });
+    }
 };
 
 //get customer by id
-exports.getcustomerById = async (req, res) => {
-  try {
+exports.getCustomerById = async (req, res) => {
+    try {
+        const customerId = req.params.id;
+        const customer = await Customer.findById(customerId);
+        if (!customer) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+        res.json(customer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+//update customer by id
+exports.updateCustomerById = async (req, res) => {
     const customerId = req.params.id;
-    const customer = await customer.findById(customerId).populate('category');
-    if (!customer) {
-      return res.status(404).json({ message: 'customer not found' });
+    try {
+        const { name, email, phone, address } = req.body;
+
+        const updatedFields = {
+            name: name || undefined,
+            email: email || undefined,
+            phone: phone || undefined,
+            address: address || undefined,
+
+        };
+
+        const updatedCustomer = await Customer.findByIdAndUpdate(
+            customerId,
+            { $set: updatedFields },
+            { new: true }
+        );
+
+        if (!updatedCustomer) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+
+        res.status(200).json({
+            success: true,
+            customer: updatedCustomer,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-    res.json(customer);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error' });
-  }
 };
-
-{/*
-//update product by id
-exports.updateProductById = async (req, res) => {
-  const productId = req.params.id;
-  try {
-    const { name, description, categoryName, price, quantity } = req.body;
-
-    const updatedFields = {
-      name: name || undefined,
-      description: description || undefined,
-      price: price || undefined,
-      quantity: quantity || undefined,
-    };
-
-    if (categoryName) {
-      const existingCategory = await Category.findOne({ name: categoryName });
-      if (!existingCategory) {
-        return res.status(400).json({ message: 'Invalid category' });
-      }
-      updatedFields.category = existingCategory._id;
-    }
-
-    if (req.file && req.file.filename) {
-      updatedFields.image = req.file.filename;
-    }
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      productId,
-      { $set: updatedFields },
-      { new: true }
-    );
-
-    if (!updatedProduct) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-    
-    res.status(200).json({
-      success: true,
-      product: updatedProduct,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-};
-
 
 
 //delete customer by id
-exports.deletecustomerById = async (req, res) => {
-  try {
-    const customerId = req.params.id;
-    const deletedcustomer = await customer.findByIdAndRemove(customerId);
+exports.deleteCustomerById = async (req, res) => {
+    try {
+        const customerId = req.params.id;
+        const deletedCustomer = await Customer.findByIdAndRemove(customerId);
 
-    if (!deletedcustomer) {
-      return res.status(404).json({ message: 'customer not found' });
+        if (!deletedCustomer) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+
+        res.status(200).json({
+            success: true,
+            customer: deletedCustomer,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
     }
-
-    res.status(200).json({
-      success: true,
-      customer: deletedcustomer,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error' });
-  }
 };
-
-*/}
-
-
-
-
