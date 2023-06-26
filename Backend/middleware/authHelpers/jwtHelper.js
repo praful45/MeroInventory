@@ -8,7 +8,7 @@ module.exports = {
             const payload = {}
             const secret = process.env.ACCESS_TOKEN_SECRET
             const options = {
-                expiresIn: "180s",
+                expiresIn: "3600s",
                 issuer: "google.com",
                 audience: userId
             }

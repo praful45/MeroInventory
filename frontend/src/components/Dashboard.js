@@ -3,13 +3,16 @@ import { Card, Space, Statistic, Typography } from "antd";
 import { Container, Navbar } from "react-bootstrap";
 // import { Bar } from 'react-chartjs-2';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { PieChart, Pie,  Legend, Cell } from 'recharts';
+import { PieChart, Pie, Legend, Cell } from 'recharts';
 import "./Dashboard.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function Dashboard() {
   const [categoryCount, setCategoryCount] = useState();
+  const [productCount, setProductCount] = useState();
+  const { user } = useAuthContext();
   const salesData = [
     { name: 'Remaining Quantity', remainingQuantity: 100, soldQuantity: 75 },
     { name: 'Sold Quantity', remainingQuantity: 200, soldQuantity: 150 },
@@ -31,7 +34,11 @@ function Dashboard() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/getallcategories');
+      const response = await axios.get('http://localhost:5000/api/getallcategories', {
+        headers: {
+          'Authorization': `Bearer ${user.accessToken}`
+        }
+      });
       console.log(response.data);
       setCategoryCount(response.data.length); // Set the category count
     } catch (error) {
@@ -39,8 +46,23 @@ function Dashboard() {
     }
   }
 
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/getallproducts', {
+        headers: {
+          'Authorization': `Bearer ${user.accessToken}`
+        }
+      });
+      console.log(response.data);
+      setProductCount(response.data.length); // Set the product count
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     fetchCategories(); // Fetch categories and update the count on component mount
+    fetchProducts();
   }, []);
 
 
@@ -82,7 +104,7 @@ function Dashboard() {
             height: 40,
             width: 200
 
-          }} />} title={"Total Products"} value={1234} />
+          }} />} title={"Total Products"} value={productCount} />
         <DashboardCard icon={<CreditCardOutlined style={{
           color: "#8c8c8c",
           backgroundColor: "rgba(0,255,0,0,0.5)",
@@ -113,26 +135,26 @@ function Dashboard() {
           </ResponsiveContainer>
         </div>
         <div>
-        <Typography.Title level={4}>Product Report</Typography.Title>
-      <Card style={{ margin: '5px', border: '1px solid black', borderRadius: 8,width:600 }}>
-        <PieChart width={375} height={250}>
-          <Pie
-            dataKey="quantity"
-            data={data}
-            cx="50%"
-            cy="50%"
-            outerRadius={80}
-            fill="#8884d8"
-            label={(entry) => entry.name}
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend />
-        </PieChart>
-      </Card>
+          <Typography.Title level={4}>Product Report</Typography.Title>
+          <Card style={{ margin: '5px', border: '1px solid black', borderRadius: 8, width: 600 }}>
+            <PieChart width={375} height={250}>
+              <Pie
+                dataKey="quantity"
+                data={data}
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                fill="#8884d8"
+                label={(entry) => entry.name}
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </Card>
         </div>
       </div>
     </div>

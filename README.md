@@ -1,1 +1,1 @@
-Project Name : Mero Inventory
+Project Name : Mero Inventory [MERN Stack]

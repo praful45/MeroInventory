@@ -2,8 +2,18 @@ import React from "react";
 import { Container, Row, Col, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { PersonCircle, BoxArrowLeft } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
+import { useLogout } from "../hooks/useLogout";
+
+
 
 const TopNavbar = () => {
+
+  const { logout } = useLogout()
+
+  const handleClick = () => {
+    logout();
+  }
+
   return (
     <Row>
       <Col>
@@ -83,7 +93,7 @@ const TopNavbar = () => {
               </Nav>
               <Navbar.Text>
                 <NavDropdown>
-                  <Nav.Link href="#logout">
+                  <Nav.Link onClick={handleClick}>
                     Logout <BoxArrowLeft />
                   </Nav.Link>
                 </NavDropdown>

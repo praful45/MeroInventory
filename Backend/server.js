@@ -17,19 +17,23 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+//auth
+app.use('/api', authRoute)
+
+app.use('/api', productsRoute)
+
 //Routes
 app.get("/", verifyAccessToken, async (req, res, next) => {
     res.send("Home Page");
 });
 
 //categories
-app.use('/api', categoryRoute)
+app.use('/api', verifyAccessToken, categoryRoute)
 
 //products
-app.use('/api', productsRoute)
 
-//auth
-app.use('/api', authRoute)
+
+
 
 //not found
 app.use(async (req, res, next) => {
