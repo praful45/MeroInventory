@@ -25,6 +25,11 @@ const productSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
+  },
+  warehouse: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Warehouse',
+    required: true,
   }
 }, {
   timestamps: true

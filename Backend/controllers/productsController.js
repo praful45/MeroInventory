@@ -1,16 +1,21 @@
 const Product = require('../models/Product');
-const Category = require('../models/Category')
+const Category = require('../models/Category');
+const Warehouse = require('../models/Warehouse');
 
 // Create a new product
 exports.createProduct = async (req, res) => {
   try {
-    const { name, description, categoryName, price, quantity } = req.body;
+    const { name, description, categoryName, price, quantity, warehouseName } = req.body;
     const { filename } = req.file;
     // Find category by it's name
     const category = await Category.findOne({ name: categoryName });
+    const warehouse = await Warehouse.findOne({ name: warehouseName });
 
-    if (!category) {  
+    if (!category) {
       return res.status(404).json({ message: 'Category not found' });
+    }
+    if (!warehouse) {
+      return res.status(404).json({ message: 'Warehouse not found' });
     }
 
     const newProduct = new Product({
@@ -19,6 +24,7 @@ exports.createProduct = async (req, res) => {
       category: category._id, // Link category ID to the product
       price,
       quantity,
+      warehouse: warehouse._id, // Link warehouse id with this product
       image: filename,
     });
 
@@ -37,7 +43,7 @@ exports.createProduct = async (req, res) => {
 //get all products
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category');
+    const products = await Product.find().populate('category').populate('warehouse');
     res.status(200).json(products);
   } catch (error) {
     console.error(error);
@@ -49,7 +55,7 @@ exports.getAllProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
   try {
     const productId = req.params.id;
-    const product = await Product.findById(productId).populate('category');
+    const product = await Product.findById(productId).populate('category').populate('warehouse');
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
@@ -64,7 +70,7 @@ exports.getProductById = async (req, res) => {
 exports.updateProductById = async (req, res) => {
   const productId = req.params.id;
   try {
-    const { name, description, categoryName, price, quantity } = req.body;
+    const { name, description, categoryName, warehouseName, price, quantity } = req.body;
 
     const updatedFields = {
       name: name || undefined,
@@ -81,6 +87,14 @@ exports.updateProductById = async (req, res) => {
       updatedFields.category = existingCategory._id;
     }
 
+    if (warehouseName) {
+      const existingWarehouse = await Warehouse.findOne({ name: warehouseName });
+      if (!existingWarehouse) {
+        return res.status(400).json({ message: 'Invalid warehouse' });
+      }
+      updatedFields.warehouse = existingWarehouse._id;
+    }
+
     if (req.file && req.file.filename) {
       updatedFields.image = req.file.filename;
     }
@@ -94,7 +108,7 @@ exports.updateProductById = async (req, res) => {
     if (!updatedProduct) {
       return res.status(404).json({ message: 'Product not found' });
     }
-    
+
     res.status(200).json({
       success: true,
       product: updatedProduct,
