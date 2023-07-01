@@ -13,14 +13,10 @@ const warehouseSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    manager: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Employee"
+    email: {
+        type: String,
+        required: true
     },
-    inventory: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product"
-    }]
 },{timestamps:true});
 
 module.exports = mongoose.model('Warehouse',warehouseSchema);

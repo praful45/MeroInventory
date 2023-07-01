@@ -6,6 +6,7 @@ const cors = require("cors");
 const createError = require('http-errors')
 const categoryRoute = require('./routes/categoryRoute')
 const productsRoute = require('./routes/productsRoute')
+const warehouseRoute = require('./routes/warehouseRoute')
 const authRoute = require('./routes/authRoute');
 const { verifyAccessToken } = require("./middleware/authHelpers/jwtHelper");
 
@@ -32,7 +33,8 @@ app.use('/api', verifyAccessToken, categoryRoute)
 
 //products
 
-
+// warehouse
+app.use('/api', verifyAccessToken, warehouseRoute)
 
 
 //not found
