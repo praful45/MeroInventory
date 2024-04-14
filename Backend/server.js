@@ -9,6 +9,9 @@ const productsRoute = require('./routes/productsRoute')
 const warehouseRoute = require('./routes/warehouseRoute')
 const authRoute = require('./routes/authRoute');
 const { verifyAccessToken } = require("./middleware/authHelpers/jwtHelper");
+const { db } = require("./config/connection");
+const router = express.Router();
+const mysql = require('mysql2');
 
 const app = express()
 
@@ -55,16 +58,19 @@ app.use((err, req, res, next) => {
     })
 })
 
-
+app.listen(5000, () => {
+    console.log("Server is running on port 5000");
+});
 
 
 //Connect to DB and start server
 const PORT = process.env.PORT || 5000;
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log(`Server Running on port ${PORT}`)
-        })
-    })
-    .catch((err) => console.log())
+// UNCOMMENT THIS TO USE MONGO DB
+// mongoose
+//     .connect(process.env.MONGO_URI)
+//     .then(() => {
+//         app.listen(PORT, () => {
+//             console.log(`Server Running on port ${PORT}`)
+//         })
+//     })
+//     .catch((err) => console.log(err))
